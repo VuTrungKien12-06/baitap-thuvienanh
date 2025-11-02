@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thư viện ảnh cá nhân của Kiên</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f9fc;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #2b4c7e;
+    }
+
+    h2 {
+      color: #456990;
+    }
+
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    figure {
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      width: 250px;
+      background: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+
+    figure:hover {
+      transform: scale(1.03);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px 10px 0 0;
+      transition: transform 0.4s ease;
+    }
+
+    figure:hover img {
+      transform: scale(1.1);
+    }
+
+    figcaption {
+      padding: 10px;
+      font-weight: bold;
+    }
+
+    #info {
+      margin-top: 25px;
+      color: #2b4c7e;
+      font-size: 18px;
+      font-style: italic;
+    }
+
+    figure:focus {
+      outline: 3px solid #2b4c7e;
+      transform: scale(1.05);
+    }
+
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .lightbox img {
+      max-width: 90%;
+      max-height: 85%;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 35px;
+      color: white;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .close-btn:hover {
+      color: #ddd;
+    }
+  </style>
+</head>
+<body onload="addTabindex()">
+
+  <h1>Thư viện ảnh cá nhân của Kiên</h1>
+  <h2>Bộ sưu tập 6 khoảnh khắc yêu thích</h2>
+
+  <section class="gallery">
+    <figure onmouseover="highlight(this)" onmouseleave="unhighlight(this)" 
+            onfocus="highlight(this)" onblur="unhighlight(this)" onclick="openImage('mountain.jpg')" tabindex="0">
+      <img src="mountain.jpg" alt="Khung cảnh núi hùng vĩ dưới bầu trời trong xanh">
+      <figcaption>Phong cảnh núi</figcaption>
+    </figure>
+
+    <figure onmouseover="highlight(this)" onmouseleave="unhighlight(this)" 
+            onfocus="highlight(this)" onblur="unhighlight(this)" onclick="openImage('sea.jpg')">
+      <img src="sea.jpg" alt="Biển xanh và sóng trắng xô bờ">
+      <figcaption>Biển</figcaption>
+    </figure>
+
+    <figure onmouseover="highlight(this)" onmouseleave="unhighlight(this)" 
+            onfocus="highlight(this)" onblur="unhighlight(this)" onclick="openImage('forest.jpg')">
+      <img src="forest.jpg" alt="Khu rừng tươi tốt với ánh nắng xuyên qua tán lá">
+      <figcaption>Rừng</figcaption>
+    </figure>
+
+    <figure onmouseover="highlight(this)" onmouseleave="unhighlight(this)" 
+            onfocus="highlight(this)" onblur="unhighlight(this)" onclick="openImage('city.jpg')">
+      <img src="city.jpg" alt="Thành phố hiện đại với các tòa nhà cao tầng">
+      <figcaption>Thành phố</figcaption>
+    </figure>
+
+    <figure onmouseover="highlight(this)" onmouseleave="unhighlight(this)" 
+            onfocus="highlight(this)" onblur="unhighlight(this)" onclick="openImage('flower.jpg')">
+      <img src="flower.jpg" alt="Những bông hoa đầy màu sắc trong nắng sớm">
+      <figcaption>Hoa</figcaption>
+    </figure>
+
+    <figure onmouseover="highlight(this)" onmouseleave="unhighlight(this)" 
+            onfocus="highlight(this)" onblur="unhighlight(this)" onclick="openImage('desert.jpg')">
+      <img src="desert.jpg" alt="Sa mạc vàng trải dài đến tận chân trời">
+      <figcaption>Sa mạc</figcaption>
+    </figure>
+  </section>
+
+  <p id="info">Di chuột, nhấn hoặc dùng phím Tab để xem chi tiết từng ảnh.</p>
+
+  <div class="lightbox" id="lightbox">
+    <span class="close-btn" onclick="closeImage()">&times;</span>
+    <img id="lightbox-img" src="" alt="Ảnh phóng to">
+  </div>
+
+  <script>
+    function highlight(element) {
+      element.style.border = "3px solid #2b4c7e";
+      element.style.background = "#eef3f9";
+      const caption = element.querySelector("figcaption").textContent;
+      document.getElementById("info").textContent = "Bạn đang xem: " + caption;
+      console.log("Focus on: " + caption);
+    }
+
+    function unhighlight(element) {
+      element.style.border = "2px solid #ddd";
+      element.style.background = "#fff";
+      document.getElementById("info").textContent = "Di chuột, nhấn hoặc dùng phím Tab để xem chi tiết từng ảnh.";
+      console.log("Blur from element");
+    }
+
+    function addTabindex() {
+      const figures = document.querySelectorAll("figure");
+      for (let i = 0; i < figures.length; i++) {
+        figures[i].setAttribute("tabindex", i + 1);
+      }
+      console.log("Thuộc tính tabindex đã được thêm tự động!");
+    }
+
+    function openImage(src) {
+      document.getElementById("lightbox").style.display = "flex";
+      document.getElementById("lightbox-img").src = src;
+      console.log("Mở ảnh: " + src);
+    }
+
+    function closeImage() {
+      document.getElementById("lightbox").style.display = "none";
+      console.log("Đóng ảnh");
+    }
+
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "Escape") {
+        closeImage();
+      }
+    });
+  </script>
+
+</body>
+</html>
